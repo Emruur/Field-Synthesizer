@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Field Synthesizer</title>
+	<script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
+	<!-- <script src="libraries/p5.sound.js"></script> -->
+	<link rel="stylesheet" href="style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+	<style>
+		body {
+			font-family: 'Poppins', sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		canvas {
+			margin: auto;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="top-bar-cont">
+
+		<div class="top-top-bar-cont">
+			<div class="extra-control-bar" id="extra-bar">
+				<div class="extra-control extra-control-speed"><label for="speed-check"> Speed Modulation</label>
+					<div class="checkbox-cont">
+						<input class="checkbox" type="checkbox" name="speed-check" id=""
+						onclick="handleCheckBox('speed',this)">
+						<select onchange="automationMap.get('speed').function= this.value">
+							<option value="sin" selected>Sin</option>
+							<option value="cos" >Cos</option>
+							<option value="noise">Noise</option>
+						  </select>
+					</div>
+					
+					<label for="">rate</label>
+					<input type="range" name="" id="" value="0.1" min="0.01" max="0.2" step="0.01"
+						oninput="automationMap.get('speed').xspeed= Number(this.value)">
+					<label for="">amount</label>
+					<input type="range" name="" id="" min="0" max="1" value="0.5" step="0.1"
+						oninput=" automationMap.get('speed').amplitude= this.value">
+				</div>
+				<div class="extra-control extra-control-smear"><label for="speed-check"> Smear Modulation</label>
+					<div class="checkbox-cont">
+						<input class="checkbox" type="checkbox" name="speed-check" id=""
+						onclick="handleCheckBox('smear',this)">
+						<select onchange="automationMap.get('smear').function= this.value">
+							<option value="sin" selected>Sin</option>
+							<option value="cos" >Cos</option>
+							<option value="noise">Noise</option>
+						  </select>
+					</div>
+					
+					<label for="">rate</label>
+					
+					<input type="range" name="" id="" value="0.1" min="0.01" max="0.2" step="0.01"
+						oninput="automationMap.get('smear').xspeed= Number(this.value)">
+					<label for="">amount</label>
+					<input type="range" name="" id="" min="0" max="1" value="0.5" step="0.1"
+						oninput=" automationMap.get('smear').amplitude= this.value">
+				</div>
+				<div class="extra-control extra-control-harmony"><label for="speed-check"> Harmony Modulation</label>
+					<div class="checkbox-cont">
+						<input class="checkbox" type="checkbox" name="speed-check" id=""
+						onclick="handleCheckBox('harmony',this)">
+						<select onchange="automationMap.get('harmony').function= this.value">
+							<option value="sin" selected>Sin</option>
+							<option value="cos" >Cos</option>
+							<option value="noise">Noise</option>
+						  </select>
+					</div>
+					
+					<label for="">rate</label>
+					<input type="range" name="" id="" value="0.1" min="0.01" max="0.2" step="0.01"
+						oninput="automationMap.get('harmony').xspeed= Number(this.value)">
+					<label for="">amount</label>
+					<input type="range" name="" id="" min="0" max="1" value="0.5" step="0.1"
+						oninput=" automationMap.get('harmony').amplitude= this.value">
+				</div>
+				<div class="extra-control extra-control-heat"><label for="speed-check"> Heat Modulation</label>
+					<div class="checkbox-cont">
+							<input class="checkbox" type="checkbox" name="speed-check" id=""
+						onclick="handleCheckBox('heat',this)">
+						<select onchange="automationMap.get('heat').function= this.value">
+							<option value="sin" selected>Sin</option>
+							<option value="cos" >Cos</option>
+							<option value="noise">Noise</option>
+						  </select>
+					</div>
+				
+					<label for="">rate</label>
+					<input type="range" name="" id="" value="0.1" min="0.01" max="0.2" step="0.01"
+						oninput="automationMap.get('heat').xspeed= Number(this.value)">
+					<label for="">amount</label>
+					<input type="range" name="" id="" min="0" max="1" value="0.5" step="0.1"
+						oninput=" automationMap.get('heat').amplitude= this.value">
+				</div>
+
+			</div>
+			<div class="horizontal-cont">
+				<div class="top-bar">
+
+					<div class="speed-slider-cont select-cont">
+						<input type="range" name="speed-slider" id="ss" min="0.008" value="0.01" max="0.03"
+							step="0.0005" oninput="speed(this.value)">
+						<label for="speed-slider">Speed</label>
+					</div>
+					<div class="smear-slider-cont select-cont">
+						<input type="range" name="smear-slider" id="cs" value="25" min="2" max="50" step="1"
+							oninput="smear(this.value)">
+						<label for="smear">Smear</label>
+					</div>
+					<div class="harmony-slider-cont select-cont">
+						<input type="range" name="harmony-slider" id="hs" value="10" min="2" max="20" step="1"
+							oninput="harmony(this.value)">
+						<label for="harmony">Harmony</label>
+					</div>
+					<div class="heat-slider-cont select-cont">
+						<input type="range" name="heat-slider" id="ws" value="10" min="0" max="100" step="1"
+							oninput="heat(this.value)">
+						<label for="heat">Heat</label>
+					</div>
+				</div>
+				<div class="btn-cont">
+					<button class="show-btn" id="show-btn">
+						<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+							class="bi bi-chevron-double-down" viewBox="0 0 16 16">
+							<path fill-rule="evenodd"
+								d="M1.646 6.646a.5.5 0 0 1 .708 0L8 12.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+							<path fill-rule="evenodd"
+								d="M1.646 2.646a.5.5 0 0 1 .708 0L8 8.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+						</svg>
+					</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+<script src="scripts/automation_logic.js"></script>
+<script src="scripts/main_slider_logic.js"></script>
+<script src="scripts/event_handling_logic.js"></script>
+<script src="scripts/FlowField.js"></script>
+<script src="scripts/sketch.js"></script>
+
+
+
+
+</html>
